@@ -33,7 +33,7 @@ const App = () => {
                 villes1
             }
             {
-                Object.entries(phone).map(([Key, value]) => (
+                Object.entries(phone).map(([key, value]) => (
                     <div key={key}>
                         <strong>{key} :</strong> {Array.isArray(value) ? value.join(', ') : value}
                     </div>
