@@ -1,6 +1,8 @@
 import { AiFillLike } from "react-icons/ai";
 import { BsBasket } from "react-icons/bs";
+import { MdOutlineManageSearch } from "react-icons/md";
 import type { ArticleData } from "../interfaces/iarticleData";
+import { Link } from "react-router";
 
 interface ArticleProps {
     articleData: ArticleData;
@@ -43,6 +45,8 @@ const Article = ({ articleData, likeCount, onLike, onBasket, baskets, onCountBas
                     <button onClick={onLike} className="btn btn-ghost btn-circle" aria-label="Like">
                         <AiFillLike size={28} />{likeCount}
                     </button>
+                    <Link className="btn btn-ghost btn-circle"
+                        aria-label="Voir plus" to={`/articles/${articleData.id}`}><MdOutlineManageSearch  size={27}/></Link>
                     <button 
                         onClick={handleOnClickBasket}
                         className="btn btn-ghost btn-circle"

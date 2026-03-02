@@ -27,8 +27,7 @@ const Movie = ({ movieData, handleParentClick }: { movieData: IMovie, handlePare
                 <div className="card-actions justify-end flex items-center">
                     <AiFillLike onClick={ () => setCounter(counter + 1) } size={30}/> {counter}
                     <FaPlay onClick={ () => orderMovie() } size={27}/>
-                    <Link to={`/movies/${movieData.id}`} ><MdOutlineManageSearch  size={27}/></Link>
-                    
+                    <Link to={`/movies/${movieData.id}`} ><MdOutlineManageSearch  size={27}/></Link>                    
                 </div>
             </div>
         </div>
