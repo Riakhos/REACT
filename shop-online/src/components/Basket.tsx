@@ -36,7 +36,7 @@ function Basket({baskets, setBaskets, countBaskets, setCountBaskets }: BasketPro
                 <GiTrashCan onClick={() => handleDelete(articleData.id)} size={36} className="text-red-800 bg-blue-100 absolute top-2 right-2 border border-red-800 rounded-md p-1" />
                 <img
                     className="h-24 w-24 object-contain"
-                    src={articleData.image} alt={`Image du ${articleData.title}`} />
+                    src={articleData.thumbnail} alt={`Image du ${articleData.title}`} />
                 <span className="block mt-2">{articleData.title}</span>
                 <span className="block text-right pr-2">{articleData.price}€</span>
               </a>

@@ -5,15 +5,26 @@ import Likes from "./components/Likes";
 import Message from "./components/Message";
 import Basket from "./components/Basket";
 import { Routes, Route } from 'react-router-dom';
-import { useState } from "react";
-import { articles } from "./data/articles";
+import { useEffect, useState } from "react";
+import { getArticles } from './api/articles';
 import type { ArticleData } from './interfaces/iarticleData';
+import ArticleDetails from "./pages/ArticleDetails";
+
 
 function App() {
+  const [articles, setArticles] = useState<ArticleData[]>([]);
+  const [likes, setLikes] = useState<number[]>([]);
+  const [baskets, setBaskets] = useState<ArticleData[]>([]);
+  const [countBaskets, setCountBaskets] = useState<number[]>([]);
 
-  const [likes, setLikes] = useState<number[]>(Array(articles.length).fill(0))
-  const [baskets, setBaskets] = useState<ArticleData[]>([])
-  const [countBaskets, setCountBaskets] = useState<number[]>(Array(articles.length).fill(0))
+  // Charger les articles au montage
+  useEffect(() => {
+    getArticles().then((data) => {
+      setArticles(data);
+      setLikes(Array(data.length).fill(0));
+      setCountBaskets(Array(data.length).fill(0));
+    });
+  }, []);
 
   return (
     <div data-theme="nord">
@@ -27,10 +38,11 @@ function App() {
       />
       <Routes>
         <Route path="/" element={<Home likes={likes} setLikes={setLikes} baskets={baskets} setBaskets={setBaskets} countBaskets={countBaskets} setCountBaskets={setCountBaskets} />} />
-        <Route path="/likes" element={<Likes />} />
+        <Route path="/likes" element={<Likes likes={likes} setLikes={setLikes} baskets={baskets} setBaskets={setBaskets} countBaskets={countBaskets} setCountBaskets={setCountBaskets} articles={articles} />} />
         <Route path="/message" element={<Message />} />
         <Route path="/basket" element={<Basket baskets={baskets} setBaskets={setBaskets} />} />
         <Route path="*" element={<Home likes={likes} setLikes={setLikes} baskets={baskets} setBaskets={setBaskets}  countBaskets={countBaskets} setCountBaskets={setCountBaskets} />} />
+        <Route path="/articles/:id" element={<ArticleDetails likes={likes} setLikes={setLikes} baskets={baskets} setBaskets={setBaskets}  countBaskets={countBaskets} setCountBaskets={setCountBaskets} />} />
       </Routes>
     </div>
   )

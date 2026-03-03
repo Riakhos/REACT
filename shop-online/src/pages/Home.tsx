@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Article from "../components/Article";
-import { articles } from "../data/articles";
 import type { ArticleData } from "../interfaces/iarticleData";
-
-const categories = Array.from(new Set(articles.map(a => a.category)));
+import { getArticles } from '../api/articles';
+import { useArticleActions } from '../hooks/useArticleActions';
 
 interface HomeProps {
   likes: number[];
@@ -15,8 +14,44 @@ interface HomeProps {
 };
 
 function Home({ likes, setLikes, baskets, setBaskets, countBaskets, setCountBaskets }: HomeProps) {
-  const [selected, setSelected] = useState(categories[0]);
+  const [articles, setArticles] = useState<ArticleData[]>([]);
+  const [selected, setSelected] = useState<string>("");
 
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const articlesFromBack = await getArticles();
+        setArticles(articlesFromBack);
+        if (articlesFromBack.length > 0) {
+          setSelected(articlesFromBack[0].category);
+        }
+      } catch (error) {
+        console.log('error', error);
+      }
+    };
+    getData();
+  }, []);
+
+  // Catégories dynamiques
+  const categories = Array.from(new Set(articles.map(a => a.category)));
+
+  // Centralisation de la logique likes/panier
+  const { handleLike, handleBasket, handleCountBasket } = useArticleActions(
+    articles,
+    likes,
+    setLikes,
+    baskets,
+    setBaskets,
+    countBaskets,
+    setCountBaskets
+  );
+
+  // Articles populaires
+  // const popularArticles = articles
+  //     .map((article, i) => ({ ...article, likeCount: likes[i] }))
+  //     .sort((a, b) => (b.likeCount ?? 0) - (a.likeCount ?? 0))
+  //     .slice(0, 10);
+  
   return (
     <div>
       <div role="tablist" className="justify-center mt-2 tabs tabs-lift text-blue-800">
@@ -34,27 +69,20 @@ function Home({ likes, setLikes, baskets, setBaskets, countBaskets, setCountBask
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 justify-items-center mt-8">
         {articles
           .filter(article => article.category === selected)
-          .map((article, index) => (
-            <Article
-              key={index}
-              articleData={article}
-              likeCount={likes[index]}
-              onLike={() => {
-                const newLikes = [...likes];
-                newLikes[index]++;
-                setLikes(newLikes);
-              }}
-              onCountBasket={() => {
-                const newCountBaskets = [...countBaskets];
-                newCountBaskets[index]++;
-                setCountBaskets(newCountBaskets);
-              }}
-              baskets={baskets}
-              onBasket={() => {
-                setBaskets([...baskets, article]);
-              }}
-            />
-          ))}
+          .map((article) => {
+            const likeIndex = articles.findIndex(a => a.id === article.id);
+            return (
+              <Article
+                key={article.id}
+                articleData={article}
+                likeCount={likes[likeIndex] ?? 0}
+                onLike={() => handleLike(article.id)}
+                onCountBasket={() => handleCountBasket(article.id)}
+                baskets={baskets}
+                onBasket={() => handleBasket(article)}
+              />
+            );
+          })}
       </div>
     </div>
   );

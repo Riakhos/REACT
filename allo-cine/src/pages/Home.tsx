@@ -48,15 +48,15 @@ const Home = () => {
     //     }
     //     getUsers()
 
-    try {
-        const getData = async () => {
-            const moviesFromBack = await getMovies()
-            setMovies(moviesFromBack)
+        try {
+            const getData = async () => {
+                const moviesFromBack = await getMovies()
+                setMovies(moviesFromBack)
+            }
+            getData()
+        } catch (error) {
+            console.log('error:', error)
         }
-        getData()
-    } catch (error) {
-        console.log('error:', error)
-    }
     }, [])
 
     // loading (DaisyUI loader ou skeleton)

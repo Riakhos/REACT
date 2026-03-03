@@ -92,7 +92,37 @@ interface NavigationBarProps {
 ---
 
 ## Bonus
-- Afficher sur la page Likes uniquement les articles avec un like
+- Grâce aux likes créer une liste de produits populaires.
+  - Exemple : dans Home.tsx, pour afficher les 10 articles les plus likés :
+    ```tsx
+    const popularArticles = articles
+      .map((article, i) => ({ ...article, likeCount: likes[i] }))
+      .sort((a, b) => (b.likeCount ?? 0) - (a.likeCount ?? 0))
+      .slice(0, 10);
+    ```
+    - Affichez-les dans une section "Populaires" ou avec un filtre spécial.
+
+- Garder en mémoire les likes même après déconnexion et faire en sorte que le filtre ne crée pas de bug. On souhaite de base avoir un filtre all ou bien par catégories.
+  - Exemple : persister les likes dans le localStorage :
+    ```tsx
+    // Dans App.tsx
+    useEffect(() => {
+      const savedLikes = localStorage.getItem('likes');
+      if (savedLikes) setLikes(JSON.parse(savedLikes));
+    }, []);
+    useEffect(() => {
+      localStorage.setItem('likes', JSON.stringify(likes));
+    }, [likes]);
+    ```
+  - Pour le filtre, ajoutez une catégorie "All" :
+    ```tsx
+    const categories = ['All', ...Array.from(new Set(articles.map(a => a.category)))];
+    // ...
+    {articles
+      .filter(article => selected === 'All' || article.category === selected)
+      .map(...)
+    }
+    ```
 
 ---
 

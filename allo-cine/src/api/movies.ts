@@ -8,7 +8,7 @@ export const getMovies = async () => {
     headers: {
       "Content-type": "Application/json",
       Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4ODY2ZjkyNGMzM2VkNjcwODk0Mjk3NjVjYWExYTFiMiIsIm5iZiI6MTYyMzk0OTU4OC40OTUwMDAxLCJzdWIiOiI2MGNiODExNDg3ZTYzZTAwMjg1YjcxZWIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.QKmfs1G9qck7uv918an9zIMfoz9IRyLq43fS2L7qOEA",
+        `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
     },
   };
   const movies = await axios.get(url, options);
@@ -18,3 +18,16 @@ export const getMovies = async () => {
 };
 
 // GET id
+export const getMovie = async () => {
+  const url = `https://api.themoviedb.org/3/movie/movie_id`;
+  const options = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
+    },
+  };
+  const movie = await axios.get(url, options);
+  if (movie.status === 200) {
+    return movie.data;
+  }
+}

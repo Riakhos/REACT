@@ -20,7 +20,7 @@ const NavigationBar = ({ counterLike, baskets, setBaskets, counterCountBasket, c
                 to="/Home"
                 className="btn btn-ghost text-xl text-blue-800"
             >
-                <img className="size-14" src="logo.svg" alt="Logo Shop Online"/>Shop Online
+                <img className="size-14" src="/logo.svg" alt="Logo Shop Online"/>Shop Online
             </NavLink>
         </div>
         <div className="flex-none">
