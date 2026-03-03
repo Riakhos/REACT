@@ -7,13 +7,17 @@ import Basket from "./components/Basket";
 import { Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { getArticles } from './api/articles';
-import type { ArticleData } from './interfaces/iarticleData';
+import type { ArticleData } from './interfaces/IArticleData';
 import ArticleDetails from "./pages/ArticleDetails";
 
 
 function App() {
   const [articles, setArticles] = useState<ArticleData[]>([]);
-  const [likes, setLikes] = useState<number[]>([]);
+  // Initialiser likes à partir du localStorage si dispo, sinon []
+  const [likes, setLikes] = useState<number[]>(() => {
+    const saved = localStorage.getItem('likes');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [baskets, setBaskets] = useState<ArticleData[]>([]);
   const [countBaskets, setCountBaskets] = useState<number[]>([]);
 
@@ -21,10 +25,16 @@ function App() {
   useEffect(() => {
     getArticles().then((data) => {
       setArticles(data);
-      setLikes(Array(data.length).fill(0));
+      // Si likes vide (pas de localStorage), initialiser
+      setLikes(prev => prev.length === 0 ? Array(data.length).fill(0) : prev);
       setCountBaskets(Array(data.length).fill(0));
     });
   }, []);
+
+  // Sauvegarde automatique à chaque modification
+  useEffect(() => {
+    localStorage.setItem('likes', JSON.stringify(likes));
+  }, [likes]);
 
   return (
     <div data-theme="nord">

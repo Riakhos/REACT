@@ -1,19 +1,13 @@
 import { useEffect, useState } from "react";
 import Article from "../components/Article";
-import type { ArticleData } from "../interfaces/iarticleData";
+import type { ArticleData } from "../interfaces/IArticleData";
 import { getArticles } from '../api/articles';
 import { useArticleActions } from '../hooks/useArticleActions';
+import type { IHomeProps } from "../interfaces/IHomeProps";
 
-interface HomeProps {
-  likes: number[];
-  setLikes: React.Dispatch<React.SetStateAction<number[]>>;
-  baskets: ArticleData[];
-  setBaskets: React.Dispatch<React.SetStateAction<ArticleData[]>>;
-  countBaskets: number[];
-  setCountBaskets: React.Dispatch<React.SetStateAction<number[]>>;
-};
 
-function Home({ likes, setLikes, baskets, setBaskets, countBaskets, setCountBaskets }: HomeProps) {
+
+function Home({ likes, setLikes, baskets, setBaskets, countBaskets, setCountBaskets }: IHomeProps) {
   const [articles, setArticles] = useState<ArticleData[]>([]);
   const [selected, setSelected] = useState<string>("");
 
@@ -33,7 +27,7 @@ function Home({ likes, setLikes, baskets, setBaskets, countBaskets, setCountBask
   }, []);
 
   // Catégories dynamiques
-  const categories = Array.from(new Set(articles.map(a => a.category)));
+  const categories = ['All', ...Array.from(new Set(articles.map(a => a.category)))];
 
   // Centralisation de la logique likes/panier
   const { handleLike, handleBasket, handleCountBasket } = useArticleActions(
@@ -45,12 +39,6 @@ function Home({ likes, setLikes, baskets, setBaskets, countBaskets, setCountBask
     countBaskets,
     setCountBaskets
   );
-
-  // Articles populaires
-  // const popularArticles = articles
-  //     .map((article, i) => ({ ...article, likeCount: likes[i] }))
-  //     .sort((a, b) => (b.likeCount ?? 0) - (a.likeCount ?? 0))
-  //     .slice(0, 10);
   
   return (
     <div>
@@ -68,7 +56,7 @@ function Home({ likes, setLikes, baskets, setBaskets, countBaskets, setCountBask
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 justify-items-center mt-8">
         {articles
-          .filter(article => article.category === selected)
+          .filter(article => selected === 'All' || article.category === selected)
           .map((article) => {
             const likeIndex = articles.findIndex(a => a.id === article.id);
             return (

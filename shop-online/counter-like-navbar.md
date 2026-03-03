@@ -93,12 +93,55 @@ interface NavigationBarProps {
 
 ## Bonus
 - Grâce aux likes créer une liste de produits populaires.
-  - Exemple : dans Home.tsx, pour afficher les 10 articles les plus likés :
+  - Exemple : dans Likes.tsx, pour afficher les articles les plus likés :
     ```tsx
-    const popularArticles = articles
-      .map((article, i) => ({ ...article, likeCount: likes[i] }))
-      .sort((a, b) => (b.likeCount ?? 0) - (a.likeCount ?? 0))
-      .slice(0, 10);
+    const Likes = ({ likes, setLikes, baskets, setBaskets, countBaskets, setCountBaskets, articles }: LikesProps) => {
+      // Associer chaque article à son nombre de likes
+      const articlesWithLikes = articles.map((article, idx) => ({
+        ...article,
+        likeCount: likes[idx] || 0
+      }));
+
+      // Trier par nombre de likes décroissant et ne garder que ceux avec au moins 1 like
+      const sorted = articlesWithLikes
+        .filter(a => a.likeCount > 0)
+        .sort((a, b) => b.likeCount - a.likeCount);
+
+      // Centralisation de la logique likes/panier
+      const { handleLike, handleBasket, handleCountBasket } = useArticleActions(
+        articles,
+        likes,
+        setLikes,
+        baskets,
+        setBaskets,
+        countBaskets,
+        setCountBaskets
+      );
+
+      return (
+        <div className="container mx-auto p-4">
+          <h1 className="text-3xl font-bold mb-6">Produits les plus likés</h1>
+          {sorted.length === 0 ? (
+            <p>Aucun produit liké pour le moment.</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 justify-items-center mt-8">
+              {sorted.map(article => (
+                <Article
+                  key={article.id}
+                  articleData={article}
+                  likeCount={article.likeCount}
+                  onLike={() => handleLike(article.id)}
+                  onCountBasket={() => handleCountBasket(article.id)}
+                  baskets={baskets}
+                  onBasket={() => handleBasket(article)}
+                  showDetails={true}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    };
     ```
     - Affichez-les dans une section "Populaires" ou avec un filtre spécial.
 
@@ -106,10 +149,24 @@ interface NavigationBarProps {
   - Exemple : persister les likes dans le localStorage :
     ```tsx
     // Dans App.tsx
-    useEffect(() => {
-      const savedLikes = localStorage.getItem('likes');
-      if (savedLikes) setLikes(JSON.parse(savedLikes));
-    }, []);
+
+    // Initialisation du state likes à partir du localStorage (bonne pratique)
+    const [likes, setLikes] = useState<number[]>(() => {
+      const saved = localStorage.getItem('likes');
+      return saved ? JSON.parse(saved) : [];
+    });
+
+    // Charger les articles au montage
+  useEffect(() => {
+    getArticles().then((data) => {
+      setArticles(data);
+      // Si likes vide (pas de localStorage), initialiser
+      setLikes(prev => prev.length === 0 ? Array(data.length).fill(0) : prev);
+      setCountBaskets(Array(data.length).fill(0));
+    });
+  }, []);
+
+    // Sauvegarde automatique à chaque modification
     useEffect(() => {
       localStorage.setItem('likes', JSON.stringify(likes));
     }, [likes]);

@@ -1,16 +1,8 @@
-import type { ArticleData } from "../interfaces/iarticleData";
 import { articles } from "../data/articles";
 import { GiTrashCan } from "react-icons/gi";
+import type { IBasketProps } from "../interfaces/IBasketProps";
 
-interface BasketProps {
-  baskets: ArticleData[];
-  setBaskets: React.Dispatch<React.SetStateAction<ArticleData[]>>;
-  countBaskets?: number[];
-  setCountBaskets?: React.Dispatch<React.SetStateAction<number[]>>;
-};
-
-
-function Basket({baskets, setBaskets, countBaskets, setCountBaskets }: BasketProps) {
+function Basket({baskets, setBaskets, countBaskets, setCountBaskets }: IBasketProps) {
 
   const handleDelete = (id:number) => {
     setBaskets(baskets.filter(article => article.id !== id));

@@ -1,20 +1,11 @@
 import { AiFillLike } from "react-icons/ai";
 import { BsBasket } from "react-icons/bs";
 import { MdOutlineManageSearch } from "react-icons/md";
-import type { ArticleData } from "../interfaces/iarticleData";
+import type { ArticleData } from "../interfaces/IArticleData";
 import { Link } from "react-router";
+import type { IArticleProps } from "../interfaces/IArticleProps";
 
-interface ArticleProps {
-    articleData: ArticleData;
-    likeCount: number;
-    onLike: () => void;
-    baskets: ArticleData[];
-    onBasket: () => void;
-    onCountBasket: () => void;
-    showDetails?: boolean;
-}
-
-const Article = ({ articleData, likeCount, onLike, onBasket, baskets, onCountBasket, showDetails = false }: ArticleProps) => {
+const Article = ({ articleData, likeCount, onLike, onBasket, baskets, onCountBasket, showDetails = false }: IArticleProps) => {
 
     const inBasket = baskets.some((article: ArticleData) => article.id === articleData.id);
     const handleOnClickBasket = () => {

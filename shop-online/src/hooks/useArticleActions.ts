@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import type { ArticleData } from "../interfaces/iarticleData";
+import type { ArticleData } from "../interfaces/IArticleData";
 
 export function useArticleActions(
   articles: ArticleData[],

@@ -1,18 +1,9 @@
 import { links } from "./Links";
 import { NavLink } from "react-router-dom";
 import Basket from "./Basket";
-import type { ArticleData } from "../interfaces/iarticleData";
+import type { INavigationBarProps } from "../interfaces/INavigationBarProps";
 
-interface NavigationBarProps {
-    counterLike: number;
-    baskets: ArticleData[];
-    setBaskets: React.Dispatch<React.SetStateAction<ArticleData[]>>;
-    counterCountBasket: number;
-    countBaskets: number[];
-    setCountBaskets: React.Dispatch<React.SetStateAction<number[]>>;
-};
-
-const NavigationBar = ({ counterLike, baskets, setBaskets, counterCountBasket, countBaskets, setCountBaskets }: NavigationBarProps) => {
+const NavigationBar = ({ counterLike, baskets, setBaskets, counterCountBasket, countBaskets, setCountBaskets }: INavigationBarProps) => {
     return (
     <div className="navbar bg-blue-100 shadow-sm">
         <div className="flex-1">

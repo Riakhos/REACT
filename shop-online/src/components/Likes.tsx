@@ -1,18 +1,8 @@
 import Article from "../components/Article";
-import type { ArticleData } from "../interfaces/iarticleData";
 import { useArticleActions } from '../hooks/useArticleActions';
+import type { ILikesProps } from "../interfaces/ILikesProps";
 
-interface LikesProps {
-  likes: number[];
-  setLikes: React.Dispatch<React.SetStateAction<number[]>>;
-  baskets: ArticleData[];
-  setBaskets: React.Dispatch<React.SetStateAction<ArticleData[]>>;
-  countBaskets: number[];
-  setCountBaskets: React.Dispatch<React.SetStateAction<number[]>>;
-  articles: ArticleData[];
-}
-
-const Likes = ({ likes, setLikes, baskets, setBaskets, countBaskets, setCountBaskets, articles }: LikesProps) => {
+const Likes = ({ likes, setLikes, baskets, setBaskets, countBaskets, setCountBaskets, articles }: ILikesProps) => {
   // Associer chaque article à son nombre de likes
   const articlesWithLikes = articles.map((article, idx) => ({
     ...article,
@@ -41,7 +31,7 @@ const Likes = ({ likes, setLikes, baskets, setBaskets, countBaskets, setCountBas
       {sorted.length === 0 ? (
         <p>Aucun produit liké pour le moment.</p>
       ) : (
-        <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 justify-items-center mt-8">
           {sorted.map(article => (
             <Article
               key={article.id}

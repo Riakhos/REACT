@@ -1,20 +1,12 @@
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
-import type { ArticleData } from '../interfaces/iarticleData';
+import type { ArticleData } from '../interfaces/IArticleData';
 import Article from "../components/Article";
 import { getArticle } from "../api/articles";
 import { useArticleActions } from '../hooks/useArticleActions';
+import type { IArticleDetailsProps } from "../interfaces/IArticleDetailsProps";
 
-interface ArticleDetailsProps {
-    likes: number[];
-    setLikes: React.Dispatch<React.SetStateAction<number[]>>;
-    baskets: ArticleData[];
-    setBaskets: React.Dispatch<React.SetStateAction<ArticleData[]>>;
-    countBaskets: number[];
-    setCountBaskets: React.Dispatch<React.SetStateAction<number[]>>;
-}
-
-const ArticleDetails = ({ likes, setLikes, baskets, setBaskets, countBaskets, setCountBaskets }: ArticleDetailsProps) => {
+const ArticleDetails = ({ likes, setLikes, baskets, setBaskets, countBaskets, setCountBaskets }: IArticleDetailsProps) => {
     const { id } = useParams();
     const [oneArticle, setOneArticle] = useState<ArticleData | null>(null);
 
