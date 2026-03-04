@@ -6,7 +6,7 @@ import { BsBasket } from "react-icons/bs";
 export const links = [
     {
         name: 'Home',
-        path: '/home',
+        path: '/',
         icon: FaHome
     },
     {

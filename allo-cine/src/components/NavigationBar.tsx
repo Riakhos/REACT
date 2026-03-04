@@ -1,6 +1,11 @@
 import { Link } from "react-router";
+import Signin from "./Signin";
+import Signup from "./Signup";
+import { useContext } from "react";
+import { WishListContext } from "../context/WishListContext"
 
 const NavigationBar = () => {
+    const {wishList} = useContext(WishListContext)
     return (
         <div className="navbar bg-base-100 shadow-sm">
             <div className="flex-1">
@@ -8,9 +13,16 @@ const NavigationBar = () => {
             </div>
             <div className="flex-none">
                 <ul className="menu menu-horizontal px-1 gap-1.5">
-                    <Link to="/my-list"><li className="btn">My list</li></Link>
-                    <Link to="/signin"><li className="btn">Signin</li></Link>
-                    <Link to="/signup"><li className="btn">Signup</li></Link>
+                    <Link to="/my-list"><li className="btn">My list ({wishList.length}) </li></Link>
+                    {/* Open the modal using document.getElementById('ID').showModal() method */}
+                    <Link to="/signin"><li className="btn" onClick={()=>(document.getElementById('form-signin')as HTMLDialogElement)?.showModal()}>Signin</li></Link>
+                    <dialog id="form-signin" className="modal">
+                        <Signin />                        
+                    </dialog>
+                    <Link to="/signup"><li className="btn" onClick={()=>(document.getElementById('form-signup')as HTMLDialogElement)?.showModal()}>Signup</li></Link>
+                    <dialog id="form-signup" className="modal">
+                        <Signup />                        
+                    </dialog>
 
                     <li>
                         <details>

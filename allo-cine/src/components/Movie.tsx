@@ -1,13 +1,27 @@
 import { FaPlay } from "react-icons/fa";
 import { AiFillLike } from "react-icons/ai";
+import { IoIosAddCircle } from "react-icons/io";
+import { IoMdCheckmarkCircle } from "react-icons/io";
 import { MdOutlineManageSearch } from "react-icons/md";
 import type { IMovie } from "../interfaces/imovie";
-import { useState } from "react";
+import { useContext } from "react";
 import { Link } from "react-router";
+import { CounterContext } from "../context/CounterContext"
+import { WishListContext } from "../context/WishListContext"
 
-const Movie = ({ movieData, handleParentClick }: { movieData: IMovie, handleParentClick?: (movie: IMovie) => void }) => {
+interface IMovieComponent{
+    movieData: IMovie,
+    handleParentClick?: (movie: IMovie) => void | null,
+    isInWishList: boolean
+}
 
-    const[counter, setCounter] = useState<number>(0)
+
+const Movie = ({ movieData, handleParentClick, isInWishList }: IMovieComponent) => {
+
+    const { counter, setCounter } = useContext(CounterContext)
+    
+    const { handleWishList } = useContext(WishListContext)
+
     const orderMovie = () => {
         console.log('Salut!')
         handleParentClick?.(movieData)
@@ -25,6 +39,9 @@ const Movie = ({ movieData, handleParentClick }: { movieData: IMovie, handlePare
                 <h2 className="card-title">{movieData.title}</h2>
                 <p>{movieData.overview}</p>
                 <div className="card-actions justify-end flex items-center">
+                    {
+                        isInWishList  ? (<IoMdCheckmarkCircle onClick={() => handleWishList(movieData)} size={30} />) : (<IoIosAddCircle onClick={() => handleWishList(movieData)} size={30} />)
+                    }
                     <AiFillLike onClick={ () => setCounter(counter + 1) } size={30}/> {counter}
                     <FaPlay onClick={ () => orderMovie() } size={27}/>
                     <Link to={`/movies/${movieData.id}`} ><MdOutlineManageSearch  size={27}/></Link>                    

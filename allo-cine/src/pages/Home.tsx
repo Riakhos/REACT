@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import Movie from '../components/Movie'
 // import { movies } from '../data/movies'
 import type { IMovie } from '../interfaces/imovie'
+import { getMovies } from "../api/movies";
 import { LuCupSoda } from "react-icons/lu"
 import { PiPopcornDuotone } from "react-icons/pi"
-import { getMovies } from "../api/movies";
+import { WishListContext } from '../context/WishListContext'
 
 const Home = () => {
 
@@ -12,6 +13,8 @@ const Home = () => {
     const [snack, setSnack] = useState<string[]>([])
     const snackValue = ['PopCorn', 'Coca']
     const [movies, setMovies] = useState<IMovie[]>([])
+
+    const {wishList} = useContext(WishListContext)
     
     const getMovie = (myMovie: IMovie) => {
         setMovieName(myMovie.title)
@@ -69,16 +72,21 @@ const Home = () => {
                     movieName != '' && (`Vous avez choisi ${movieName}`)
                 }
             </p>
-            <div className='flex items-center justify-start'>
+            <div className='flex items-center justify-center gap-10'>
                 <PiPopcornDuotone onClick={() => handleSnack(snackValue[0])} size={50} />
                 <LuCupSoda onClick={() => handleSnack(snackValue[1])} size={50} />
                 <h2>Vous avez choisi: {snack.join(' - ')}</h2>
             </div>
             <div className="flex items-center justify-center h-screen gap-3.5 flex-wrap mt-10">
                 {
-                    movies.length > 0 && movies.map((movie: IMovie) => (
-                        <Movie key={movie.id} movieData={movie} handleParentClick={getMovie} />
-                    ))
+                    movies.length > 0 && movies.map((movie: IMovie) => {
+                        let isIn = false
+                        const movieSearch = wishList.find((item: IMovie) => item.id === movie.id)
+                        if (movieSearch) {
+                            isIn = true
+                        }
+                        return <Movie key={movie.id} movieData={movie} handleParentClick={getMovie} isInWishList={isIn} />
+                    })
                 }
 
             </div>
