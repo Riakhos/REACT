@@ -40,11 +40,26 @@ const Signup = () => {
                             </label>
                             <input 
                                 type="email"
-                                {...register("email", {required: true})}
+                                {...register("email", {
+                                    required: "Email is required",
+                                    pattern: {
+                                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                        message: "Invalid email address"
+                                    },
+                                    minLength: {
+                                        value: 5,
+                                        message: "Email too short"
+                                    },
+                                    maxLength: {
+                                        value: 50,
+                                        message: "Email too long"
+                                    }
+                                })}
+                                autoComplete="email"
                                 placeholder="Enter your email address"
                                 className="input input-bordered input-ghost w-full bg-gray-700 border-gray-600 text-white placeholder-gray-500 focus:outline-none focus:border-red-600 focus:input-primary"              
                             />
-                            {errors.password?.type === "required" && <p>Please enter a email address</p>} 
+                            {errors.email && <p>{errors.email.message}</p>} 
                         </div>
 
                         {/* Password Input */}
@@ -54,12 +69,26 @@ const Signup = () => {
                             </label>
                             <input
                                 type="password"
-                                {...register("password", {minLength: 12, required: true})}
+                                {...register("password", {
+                                    required: "password is required",
+                                    minLength: {
+                                        value: 12,
+                                        message: "Password too short"
+                                    },
+                                    maxLength: {
+                                        value: 50,
+                                        message: "Password too long"
+                                    },
+                                    pattern: {
+                                        value: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{12,}$/,
+                                        message: "The password must contain one uppercase letter, one lowercase letter, one number, and one special character."
+                                    },
+                                })}
+                                autoComplete="new-password"
                                 placeholder="Enter your password"
                                 className="input input-bordered input-ghost w-full bg-gray-700 border-gray-600 text-white placeholder-gray-500 focus:outline-none focus:border-red-600 focus:input-primary"
                             />
-                            {errors.password?.type === "minLength" && <p>Password too short</p>} 
-                            {errors.password?.type === "required" && <p>Please enter a password</p>} 
+                            {errors.password && <p>{errors.password.message}</p>}
                         </div>
                         
                         {/* Confirm Password Input */}
@@ -69,12 +98,26 @@ const Signup = () => {
                             </label>
                             <input
                                 type="password"
-                                {...register("confirmPassword", {minLength: 12, required: true})}
+                                {...register("password", {
+                                    required: "password is required",
+                                    minLength: {
+                                        value: 12,
+                                        message: "Password too short"
+                                    },
+                                    maxLength: {
+                                        value: 50,
+                                        message: "Password too long"
+                                    },
+                                    pattern: {
+                                        value: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{12,}$/,
+                                        message: "The password must contain one uppercase letter, one lowercase letter, one number, and one special character."
+                                    },
+                                })}
+                                autoComplete="current-password"
                                 placeholder="Confirm your password"
                                 className="input input-bordered input-ghost w-full bg-gray-700 border-gray-600 text-white placeholder-gray-500 focus:outline-none focus:border-red-600 focus:input-primary"
                             />
-                            {errors.password?.type === "minLength" && <p>Password too short</p>} 
-                            {errors.password?.type === "required" && <p>Please enter a password</p>}
+                            {errors.password && <p>{errors.password.message}</p>}
                         </div>
 
                         {/* Submit Button */}
@@ -90,8 +133,8 @@ const Signup = () => {
                     <div className="mt-6 text-center space-y-2">
                         <p className="text-gray-400 text-sm">
                             Already registered? {' '}
-                            <Link to="/signin" className="text-red-600 hover:text-red-500 font-semibold">
-                                Log in
+                            <Link to="/signin" className="text-red-600 hover:text-red-500 font-semibold" onClick={() =>(document.getElementById('form-signin') as HTMLDialogElement)?.showModal()}>
+                                Sign in
                             </Link>
                         </p>                        
                     </div>

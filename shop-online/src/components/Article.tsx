@@ -7,6 +7,7 @@ import type { IArticleProps } from "../interfaces/IArticleProps";
 
 const Article = ({ articleData, likeCount, onLike, onBasket, baskets, onCountBasket, showDetails = false }: IArticleProps) => {
 
+    
     const inBasket = baskets.some((article: ArticleData) => article.id === articleData.id);
     const handleOnClickBasket = () => {
         onBasket();
