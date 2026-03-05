@@ -1,8 +1,10 @@
-import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router"
 import type { IInputSign } from '../interfaces/IInputSign'
 
 const Signup = () => {
+
+    const navigate = useNavigate()
 
     const {
         register,
@@ -13,7 +15,8 @@ const Signup = () => {
     const handleForm = (data: IInputSign) => {
         if (data.password === data.confirmPassword) {
             console.log(data)
-            // http request => back 
+            // http request => back
+            navigate('/signin')
         }
     }
 
@@ -133,9 +136,13 @@ const Signup = () => {
                     <div className="mt-6 text-center space-y-2">
                         <p className="text-gray-400 text-sm">
                             Already registered? {' '}
-                            <Link to="/signin" className="text-red-600 hover:text-red-500 font-semibold" onClick={() =>(document.getElementById('form-signin') as HTMLDialogElement)?.showModal()}>
+                            <span
+                                className="text-red-600 hover:text-red-500 font-semibold cursor-pointer" onClick={() =>{
+                                    (document.getElementById('form-signin') as HTMLDialogElement)?.showModal(); navigate('/signin');
+                                }}
+                            >
                                 Sign in
-                            </Link>
+                            </span>
                         </p>                        
                     </div>
                 </div>

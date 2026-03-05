@@ -1,4 +1,4 @@
-import Article from "../components/Article";
+import Article from "./Article";
 import { useArticleActions } from '../hooks/useArticleActions';
 import type { ILikesProps } from "../interfaces/ILikesProps";
 

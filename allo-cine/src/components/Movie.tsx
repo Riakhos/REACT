@@ -1,10 +1,10 @@
-import { FaPlay } from "react-icons/fa";
-import { AiFillLike } from "react-icons/ai";
-import { IoIosAddCircle } from "react-icons/io";
-import { IoMdCheckmarkCircle } from "react-icons/io";
-import type { IMovie } from "../interfaces/imovie";
-import { useContext } from "react";
-import { Link } from "react-router";
+import { FaPlay } from "react-icons/fa"
+import { AiFillLike } from "react-icons/ai"
+import { IoIosAddCircle } from "react-icons/io"
+import { IoMdCheckmarkCircle } from "react-icons/io"
+import type { IMovie } from "../interfaces/imovie"
+import { useContext } from "react"
+import { Link } from "react-router"
 import { CounterContext } from "../context/CounterContext"
 import { WishListContext } from "../context/WishListContext"
 
@@ -18,17 +18,16 @@ interface IMovieComponent{
 
 const Movie = ({ movieData, handleParentClick, isInWishList, showDetails = false }: IMovieComponent) => {
 
-    const { counter, setCounter } = useContext(CounterContext)
-    
+    const { counter, increment } = useContext(CounterContext)    
     const { handleWishList } = useContext(WishListContext)
 
     const orderMovie = () => {
         console.log('Salut!')
         handleParentClick?.(movieData)
-
     }
 
     if (showDetails) {
+        
         // Version détaillée (layout horizontal)
         return (
             <div className="card bg-base-100 flex flex-row items-stretch shadow-sm">
@@ -62,12 +61,12 @@ const Movie = ({ movieData, handleParentClick, isInWishList, showDetails = false
                     </div>
                     <div className="card-actions justify-end flex items-center gap-8">
                         {isInWishList  ? (<IoMdCheckmarkCircle onClick={() => handleWishList(movieData)} size={30} />) : (<IoIosAddCircle onClick={() => handleWishList(movieData)} size={30} />)}
-                        <AiFillLike onClick={ () => setCounter(counter + 1) } size={30}/> {counter}
+                        <AiFillLike onClick={ () => increment() } size={30}/> {counter}
                         <FaPlay onClick={ () => orderMovie() } size={27}/>
                     </div>
                 </div>
             </div>
-        );
+        )
     }
 
     // Version compacte (pour la Home)
@@ -84,7 +83,7 @@ const Movie = ({ movieData, handleParentClick, isInWishList, showDetails = false
                 <div className="card-actions justify-end flex items-center gap-8">
                     <Link to={`/movies/${movieData.id}`} ><p>Voir plus</p></Link>
                     {isInWishList  ? (<IoMdCheckmarkCircle onClick={() => handleWishList(movieData)} size={30} />) : (<IoIosAddCircle onClick={() => handleWishList(movieData)} size={30} />)}
-                    <AiFillLike onClick={ () => setCounter(counter + 1) } size={30}/> {counter}
+                    <AiFillLike onClick={ () => increment() } size={30}/> {counter}
                     <FaPlay onClick={ () => orderMovie() } size={27}/>
                 </div>
             </div>
@@ -92,5 +91,5 @@ const Movie = ({ movieData, handleParentClick, isInWishList, showDetails = false
     );
 };
 
-export default Movie;
+export default Movie
  

@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react"
 import type { IMovie } from "../interfaces/imovie"
 import { WishListContext } from "./WishListContext"
 
@@ -8,11 +8,27 @@ interface WishListProviderProps {
 
 const WishListProvider = ({ children }: WishListProviderProps) => {
 
-    const [wishList, setWishList] = useState<IMovie[]>([])
+    // Initialisation sécurisée : toujours retourner un tableau
+    const [wishList, setWishList] = useState<IMovie[]>(() => {
 
+        const stored = localStorage.getItem('wishList')
+        
+        try {
+            const parsed = stored ? JSON.parse(stored) : []
+            return Array.isArray(parsed) ? parsed : []
+        } catch {
+            return []
+        }
+    })
+
+    useEffect(() => {
+      localStorage.setItem('wishList', JSON.stringify(wishList))    
+    }, [wishList])
+    
     const handleWishList = (myMovie: IMovie) => {
         if (!wishList.includes(myMovie)) {
             setWishList([...wishList, myMovie])
+            // localStorage.setItem('wishList', JSON.stringify([...wishList, myMovie]))
         } else {
             setWishList(wishList.filter((item) => item.id !== myMovie.id))
         }
@@ -23,5 +39,4 @@ const WishListProvider = ({ children }: WishListProviderProps) => {
         </WishListContext.Provider>
     )
 }
-
 export default WishListProvider

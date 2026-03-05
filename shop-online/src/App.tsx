@@ -37,7 +37,7 @@ function App() {
   }, [likes]);
 
   return (
-    <div data-theme="nord">
+    <div>
       <NavigationBar 
         counterLike={likes.reduce((a, b) => a + b, 0)}
         baskets={baskets}
@@ -51,7 +51,7 @@ function App() {
         <Route path="/likes" element={<Likes likes={likes} setLikes={setLikes} baskets={baskets} setBaskets={setBaskets} countBaskets={countBaskets} setCountBaskets={setCountBaskets} articles={articles} />} />
         <Route path="/message" element={<Message />} />
         <Route path="/basket" element={<Basket baskets={baskets} setBaskets={setBaskets} />} />
-        <Route path="*" element={<Home likes={likes} setLikes={setLikes} baskets={baskets} setBaskets={setBaskets}  countBaskets={countBaskets} setCountBaskets={setCountBaskets} />} />
+        <Route path="*" element={<Home likes={likes} setLikes={setLikes} baskets={baskets} setBaskets={setBaskets} countBaskets={countBaskets} setCountBaskets={setCountBaskets} />} />
         <Route path="/articles/:id" element={<ArticleDetails likes={likes} setLikes={setLikes} baskets={baskets} setBaskets={setBaskets}  countBaskets={countBaskets} setCountBaskets={setCountBaskets} />} />
       </Routes>
     </div>

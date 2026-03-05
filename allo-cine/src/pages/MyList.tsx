@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import { WishListContext } from "../context/WishListContext"
-import Movie from "../components/Movie";
-import type { IMovie } from "../interfaces/imovie";
+import Movie from "../components/Movie"
+import type { IMovie } from "../interfaces/imovie"
 
 const MyList = () => {
     const [movieName, setMovieName] = useState<string>('')
@@ -18,11 +18,10 @@ const MyList = () => {
             </p>
             {
                 wishList && wishList.map((item: IMovie) => (
-                    <Movie movieData={item} handleParentClick={getMovie} isInWishList={true} />
+                    <Movie key={item.id} movieData={item} handleParentClick={getMovie} isInWishList={true} />
                 ))
         }
         </div>
     )
 }
-
 export default MyList

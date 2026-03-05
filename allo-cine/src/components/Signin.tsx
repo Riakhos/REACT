@@ -1,8 +1,10 @@
-import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router"
 import type { IInputSign } from '../interfaces/IInputSign'
 
 const Signin = () => {
+
+    const navigate = useNavigate()
 
     const {
         register,
@@ -10,10 +12,12 @@ const Signin = () => {
         formState: { errors },
     } = useForm<IInputSign>()
 
+
     const handleForm = (data: IInputSign) => {
         if (data.password === data.confirmPassword) {
             console.log(data)
             // http request => back 
+            navigate('/signup')
         }
     }
 
@@ -104,14 +108,23 @@ const Signin = () => {
                     <div className="mt-6 text-center space-y-2">
                         <p className="text-gray-400 text-sm">
                             Don't have an account?{' '}
-                            <Link to="/signup" className="text-red-600 hover:text-red-500 font-semibold" onClick={()=>(document.getElementById('form-signup') as HTMLDialogElement)?.showModal()}>
+                            <span
+                                className="text-red-600 hover:text-red-500 font-semibold cursor-pointer"
+                                onClick={() => {
+                                    (document.getElementById('form-signup') as HTMLDialogElement)?.showModal();
+                                    navigate('/signup');
+                                }}
+                            >
                                 Sign up
-                            </Link>
+                            </span>
                         </p>
                         <p className="text-gray-500 text-sm">
-                        <Link to="/forgot" className="hover:text-red-600">
-                            Forgot your password?
-                        </Link>
+                            <span
+                                className="hover:text-red-600 cursor-pointer"
+                                onClick={() => navigate('/forgot')}
+                            >
+                                Forgot your password?
+                            </span>
                         </p>
                     </div>
                 </div>
